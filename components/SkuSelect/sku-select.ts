@@ -57,7 +57,7 @@ export class PathFinder {
   init() {
     this.light = cloneTwo(this.maps);
     const light = this.light;
-  
+
     // 默认每个规则都可以选中，即赋值为1
     for (let i = 0; i < light.length; i++) {
       const l = light[i];
@@ -66,7 +66,7 @@ export class PathFinder {
         l[j] = 1;
       }
     }
-  
+
     // 得到每个可操作的 SKU 质数的集合
     for (let i = 0; i < this.openWayMix.length; i++) {
       this.openWay[i] = this.openWayMix[i].reduce((acc, val) => acc * val, 1);
@@ -160,7 +160,9 @@ export class PathFinder {
 
     // 检查是否可选中
     if (!this.light[p[0]][p[1]]) {
-      throw new Error(`this point [${p}] is no longer available, please choose another`);
+      throw new Error(
+        `this point [${p}] is no longer available, please choose another`,
+      );
     }
 
     if (this.selected.includes(val)) return;
@@ -234,5 +236,5 @@ export class PathFinder {
  * @returns []
  */
 export function descartes(list: any[][]): any[][] {
-  return list.reduce((a, b) => a.flatMap(x => b.map(y => [...x, y])), [[]]);
+  return list.reduce((a, b) => a.flatMap((x) => b.map((y) => [...x, y])), [[]]);
 }

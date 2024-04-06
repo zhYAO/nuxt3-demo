@@ -1,6 +1,6 @@
 <template>
   <div class="sku-select">
-    <h3>Vue3 SKU 展示模版</h3>
+    <h3>SKU 展示模版</h3>
     <div>
       规格：
       <div
@@ -19,14 +19,6 @@
           {{ btn }}
         </el-button>
       </div>
-      可选的SKU：
-      <el-button
-        v-for="item in props.canUseSku"
-        :key="item.skuName"
-        style="margin: 0 10px"
-      >
-        {{ item.skuName }}
-      </el-button>
     </div>
   </div>
 </template>
@@ -34,61 +26,48 @@
 <script setup lang="ts">
 import { getPrime, PathFinder, descartes } from "./sku-select";
 
-const props = withDefaults(defineProps(), {
-  stateType: () => [
-    ["男裤", "女裤"],
-    ["黑色", "白色"],
-    ["S", "L"],
-    ["大", "中"],
-  ],
-  canUseSku: () => [],
-});
-console.log("prop??s", props);
-const selected = ref([]);
-const unDisabled = ref([]);
-const valueInLabel: any = ref({});
-const pathFinder = ref();
-
-watch(
-  () => props.stateType,
-  (a, b) => {
-    console.log("a", a, b);
-  },
+const props = withDefaults(
+  defineProps<{
+    stateType: string[][];
+    canUseSku: SkuSelect.ICanUseSku;
+  }>(),
   {
-    deep: true,
+    stateType: () => [],
+    canUseSku: () => [],
   },
 );
 
+const selected = ref<string[]>([]);
+const unDisabled = ref<string[]>([]);
+const valueInLabel = ref<any>({});
+const pathFinder = ref();
+
 onMounted(async () => {
-  console.log("props", props, props.stateType);
-  // const types = props.stateType.flat();
-  // const prime = await getPrime(types.length);
-  // const reValueInLabel = {};
-  // types.forEach((item, index) => {
-  //   reValueInLabel[item] = prime[index];
-  // });
+  const types: string[] = props.stateType.flat();
+  const prime = await getPrime(types.length);
+  const reValueInLabel: any = {};
+  types.forEach((item, index) => {
+    reValueInLabel[item] = prime[index];
+  });
 
-  // const way = props.stateType.map((i) => {
-  //   return i.map(ii => reValueInLabel[ii]);
-  // });
+  const way = props.stateType.map((i) => {
+    return i.map((ii) => reValueInLabel[ii]);
+  });
 
-  // const sku = descartes(props.stateType).map((item) => {
-  //   console.log('it===em',item)
-  //   return {
-  //     stock: Math.floor(Math.random() * 10) > 5 ? 0 : 1,
-  //     skuName: item,
-  //     skuPrime: item.map(ii => reValueInLabel[ii]),
-  //   };
-  // });
+  const reCanUseSku: SkuSelect.ICanUseSku = props.canUseSku.filter(
+    (item) => item.stock,
+  );
 
-  // const reCanUseSku = sku.filter(item => item.stock);
-  // pathFinder.value = new PathFinder(way, reCanUseSku.map(item => item.skuPrime));
-  // props.canUseSku = reCanUseSku;
-  // unDisabled.value = pathFinder.value.getWay().flat();
-  // valueInLabel.value = reValueInLabel;
+  pathFinder.value = new PathFinder(
+    way,
+    reCanUseSku.map((item) => item.skuName.map((ii) => reValueInLabel[ii])),
+  );
+
+  unDisabled.value = pathFinder.value.getWay().flat();
+  valueInLabel.value = reValueInLabel;
 });
 
-const onSelTypeClick = (type, prime, primeIndex) => {
+const onSelTypeClick = (type: string, prime: number, primeIndex: number) => {
   const index = selected.value.indexOf(type);
   const light = pathFinder.value.light;
 
@@ -111,8 +90,8 @@ const onSelTypeClick = (type, prime, primeIndex) => {
   unDisabled.value = pathFinder.value.getWay().flat();
 };
 
-const isSelected = (type) => selected.value.includes(type);
-const isUnDisabled = (prime) => unDisabled.value.includes(prime);
+const isSelected = (type: string) => selected.value.includes(type);
+const isUnDisabled = (prime: string) => unDisabled.value.includes(prime);
 </script>
 
 <style lang="scss" scoped>

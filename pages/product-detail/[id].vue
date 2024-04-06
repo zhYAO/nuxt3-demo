@@ -1,7 +1,10 @@
 <template>
   <div class="pdp">
-    {{ id }}
-    <el-card class="pdp-section" body-style="padding: 0; display: flex;" shadow="never">
+    <el-card
+      class="pdp-section"
+      body-style="padding: 0; display: flex;"
+      shadow="never"
+    >
       <div class="carousel">
         <el-carousel height="450px">
           <el-carousel-item v-for="item in 4" :key="item">
@@ -10,25 +13,54 @@
         </el-carousel>
       </div>
       <div class="sku">
-        <SkuSelect :stateType="stateType" />
+        <SkuSelect :stateType="stateType" :canUseSku="skuStock" />
       </div>
     </el-card>
   </div>
 </template>
 
 <script setup>
-import { useRoute } from 'vue-router';
-const route = useRoute()
+import { useRoute } from "vue-router";
+const route = useRoute();
 
-const id = ref(route.params.id)
+const id = ref(route.params.id);
 const stateType = ref([
-  ['男裤', '女裤'],
-  ['黑色', '白色'],
-  ['S', 'L'],
-  ['大', '中'],
-])
+  ["男裤", "女裤"],
+  ["黑色", "白色"],
+  ["S", "L"],
+  ["大", "中"],
+]);
 
-
+const skuStock = ref([
+  {
+    stock: 10,
+    skuName: ["男裤", "黑色", "S", "中"],
+  },
+  {
+    stock: 0,
+    skuName: ["男裤", "黑色", "L", "中"],
+  },
+  {
+    stock: 1,
+    skuName: ["男裤", "白色", "L", "大"],
+  },
+  {
+    stock: 13,
+    skuName: ["男裤", "白色", "L", "中"],
+  },
+  {
+    stock: 15,
+    skuName: ["女裤", "黑色", "L", "中"],
+  },
+  {
+    stock: 17,
+    skuName: ["女裤", "白色", "L", "大"],
+  },
+  {
+    stock: 19,
+    skuName: ["女裤", "白色", "L", "中"],
+  },
+]);
 </script>
 
 <style scoped lang="scss">
