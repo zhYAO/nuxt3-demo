@@ -3,7 +3,11 @@
     <h3>Vue3 SKU 展示模版</h3>
     <div>
       规格：
-      <div v-for="(item, index) in props.stateType" :key="index" style="margin: 10px">
+      <div
+        v-for="(item, index) in props.stateType"
+        :key="index"
+        style="margin: 10px"
+      >
         <el-button
           v-for="btn in item"
           :key="btn"
@@ -28,31 +32,35 @@
 </template>
 
 <script setup lang="ts">
-import { getPrime, PathFinder, descartes } from './sku-select';
+import { getPrime, PathFinder, descartes } from "./sku-select";
 
 const props = withDefaults(defineProps(), {
-  stateType: () => ([
-    ['男裤', '女裤'],
-    ['黑色', '白色'],
-    ['S', 'L'],
-    ['大', '中'],
-  ]),
-  canUseSku: () => []
-})
-console.log('prop??s',props)
+  stateType: () => [
+    ["男裤", "女裤"],
+    ["黑色", "白色"],
+    ["S", "L"],
+    ["大", "中"],
+  ],
+  canUseSku: () => [],
+});
+console.log("prop??s", props);
 const selected = ref([]);
 const unDisabled = ref([]);
-const valueInLabel = ref({});
+const valueInLabel: any = ref({});
 const pathFinder = ref();
 
-watch(() => props.stateType, (a, b) => {
-  console.log('a',a, b)
-}, {
-  deep: true
-})
+watch(
+  () => props.stateType,
+  (a, b) => {
+    console.log("a", a, b);
+  },
+  {
+    deep: true,
+  },
+);
 
 onMounted(async () => {
-  console.log('props',props, props.stateType)
+  console.log("props", props, props.stateType);
   // const types = props.stateType.flat();
   // const prime = await getPrime(types.length);
   // const reValueInLabel = {};
@@ -88,7 +96,8 @@ const onSelTypeClick = (type, prime, primeIndex) => {
     pathFinder.value.remove(prime);
     selected.value.splice(index, 1);
   } else if (light[primeIndex].includes(2)) {
-    const removeType = props.stateType[primeIndex][light[primeIndex].indexOf(2)];
+    const removeType =
+      props.stateType[primeIndex][light[primeIndex].indexOf(2)];
     const removePrime = valueInLabel.value[removeType];
     pathFinder.value.remove(removePrime);
     selected.value.splice(selected.value.indexOf(removeType), 1);
@@ -111,4 +120,3 @@ const isUnDisabled = (prime) => unDisabled.value.includes(prime);
   // 添加样式
 }
 </style>
-./sku
