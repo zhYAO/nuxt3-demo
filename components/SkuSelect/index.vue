@@ -24,7 +24,7 @@
 </template>
 
 <script setup lang="ts">
-import { getPrime, PathFinder, descartes } from "./sku-select";
+import { getPrime, PathFinder, descartes } from "./helper";
 
 const props = withDefaults(
   defineProps<{

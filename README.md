@@ -46,9 +46,7 @@ bun install
 
 TODO
 request
-跳转url前 拦截
+跳转url前 拦截 中间件
 登录页、弹窗
 响应式
-* 尺码颜色选择
 * 骨架屏
-* 漫游式引导

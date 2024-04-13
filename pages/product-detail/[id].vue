@@ -19,9 +19,23 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useRoute } from "vue-router";
 const route = useRoute();
+
+definePageMeta({
+  middleware: 'must-auth',
+  validate: route => {
+    // 可配置多个拦截规则
+    const rules = [
+      {
+        value: route.params.id as string,
+        regExp: /^\d+$/,
+      },
+    ]
+    return rules.every(v => v?.regExp.test(v?.value))
+  },
+})
 
 const id = ref(route.params.id);
 const stateType = ref([
