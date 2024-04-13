@@ -3,76 +3,83 @@
     <el-card
       class="pdp-section"
       body-style="padding: 0; display: flex;"
-      shadow="never"
-    >
+      shadow="never">
       <div class="carousel">
         <el-carousel height="450px">
-          <el-carousel-item v-for="item in 4" :key="item">
-            <p class="small justify-center" text="2xl">{{ item }}</p>
+          <el-carousel-item
+            v-for="item in 4"
+            :key="item">
+            <p
+              class="small justify-center"
+              text="2xl">
+              {{ item }}
+            </p>
           </el-carousel-item>
         </el-carousel>
       </div>
       <div class="sku">
-        <SkuSelect :stateType="stateType" :canUseSku="skuStock" />
+        <SkuSelect
+          :stateType="stateType"
+          :canUseSku="skuStock" />
       </div>
     </el-card>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useRoute } from "vue-router";
+import { useRoute } from 'vue-router';
 const route = useRoute();
 
 definePageMeta({
   middleware: 'must-auth',
-  validate: route => {
+  validate: (route) => {
     // 可配置多个拦截规则
     const rules = [
       {
         value: route.params.id as string,
         regExp: /^\d+$/,
       },
-    ]
-    return rules.every(v => v?.regExp.test(v?.value))
+    ];
+    return rules.every((v) => v?.regExp.test(v?.value));
   },
-})
+});
 
 const id = ref(route.params.id);
 const stateType = ref([
-  ["男裤", "女裤"],
-  ["黑色", "白色"],
-  ["S", "L"],
-  ["大", "中"],
+  ['男裤', '女裤'],
+  ['黑色', '白色'],
+  ['S', 'L'],
+  ['大', '中'],
 ]);
 
 const skuStock = ref([
   {
     stock: 10,
-    skuName: ["男裤", "黑色", "S", "中"],
+    skuName: ['男裤', '黑色', 'S', '中'],
   },
   {
     stock: 0,
-    skuName: ["男裤", "黑色", "L", "中"],
+    skuName: ['男裤', '黑色', 'L', '中'],
   },
   {
     stock: 1,
-    skuName: ["男裤", "白色", "L", "大"],
+    skuName: ['男裤', '白色', 'L', '大'],
   },
   {
     stock: 13,
-    skuName: ["男裤", "白色", "L", "中"],
+    skuName: ['男裤', '白色', 'L', '中'],
   },
   {
     stock: 15,
-    skuName: ["女裤", "黑色", "L", "中"],
+    skuName: ['女裤', '黑色', 'L', '中'],
   },
   {
     stock: 17,
-    skuName: ["女裤", "白色", "L", "大"],
+    skuName: ['女裤', '白色', 'L', '大'],
   },
   {
     stock: 19,
-    skuName: ["女裤", "白色", "L", "中"],
+    skuName: ['女裤', '白色', 'L', '中'],
   },
 ]);
 </script>

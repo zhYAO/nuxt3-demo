@@ -20,29 +20,24 @@ yarn install
 bun install
 ```
 
-## 注意点
+# 规范
 
-1. setup 执行 useFetch，虽然页面渲染正常，接口请求正常，但是控制台有报错信息：Hydration completed but contains mismatches，表明服务端和客户端渲染 内容不一致。可以通过添加 await 解决。
-   或者通过在请求前添加`await nextTick()`。
+## eslint
+### 规则 
+eslint规则说明：https://www.wenjiangs.com/docs/eslint
+  * vue规则：https://eslint.vuejs.org/rules/
+### 文件说明
+#### .eslintrc.js - eslint 规则配置
+#### .eslintignore - 忽略特定的文件和目录
+#### .prettierrc.js - 代码格式规则
+#### .prettierignore - 忽略不想格式化的文件
 
-```
-<script lang="ts" setup>
-  const fetch = async () => {
-    const { data } = await useFetch()
-    testData.value = data.value
-  };
-  await fetch() // 在这里添加 await
-</script>
-```
+**注**：prettierrc的优先级高于eslint。 如果修改了.prettierrc的配置选项，会发现 eslint 和 prettier又冲突了，这是因为vscode插件缓存没有及时更新，重启下vscode即可。
 
-2. 服务端不执行 onMounted 内容，如果 onMounted 内需执行 useFetch，应该放在`await nextTick()`之后，否则会返回 null ；
-   在 setup 内(onMounted 外)执行 useFetch，服务端和客户端都执行，为了避免渲染时 useFetch 未执行完毕，尽量使用 await 而不是 then 方法。
+#### .editorconfig - 在不同的编辑器和IDE之间定义和维护一致的编码样式规范
+#### .stylelintrc.js - 格式化css规则
 
-3. 需要注意 Nuxt3 中 useFetch 的缓存问题
-   https://juejin.cn/post/7248118049583824952#heading-0
 
-4. Hydration children mismatch in <div>: server rendered element contains more child nodes than client vdom.
-   因服务端和客户端都会请求一次，又因为 useFetch 会缓存请求结果，所以导致第二次请求的值为空，从而导致有这个提示
 
 TODO
 request
