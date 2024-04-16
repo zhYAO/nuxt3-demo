@@ -1,12 +1,13 @@
 <template>
   <div>
-    <Layout >
+    <NuxtLayout>
       <NuxtPage />
-    </Layout>
+    </NuxtLayout>
   </div>
 </template>
 <style lang="scss">
-html, body {
+html,
+body {
   padding: 0;
   margin: 0;
 }

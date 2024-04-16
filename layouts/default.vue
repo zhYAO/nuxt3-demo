@@ -13,9 +13,7 @@
     </el-container>
   </div>
 </template>
-<script setup>
-
-</script>
+<script setup></script>
 <style scoped lang="scss">
 .common-layout {
   height: 100vh;

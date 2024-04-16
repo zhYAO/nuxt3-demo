@@ -27,16 +27,6 @@ const prodList = [
     title: '商品1',
     imgUrl: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
   },
-  {
-    id: '2',
-    title: '商品2',
-    imgUrl: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-  },
-  {
-    id: '3',
-    title: '商品3',
-    imgUrl: 'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png',
-  },
 ];
 
 const handleClick = (item) => {

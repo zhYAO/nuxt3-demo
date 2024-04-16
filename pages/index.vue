@@ -2,7 +2,7 @@
   <div></div>
 </template>
 <script setup>
-  onMounted(() => {
-    navigateTo('/home')
-  })
+definePageMeta({
+  middleware: 'auth',
+});
 </script>

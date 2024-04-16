@@ -34,12 +34,12 @@ export function getPrime(total: number): number[] {
 }
 
 export class PathFinder {
-  maps: number[][];
-  openWay: number[];
-  openWayMix: number[][];
-  _way: { [key: number]: [number, number] };
-  light: number[][];
-  selected: number[];
+  maps: number[][]; // 规格map
+  openWay: number[]; // 可选规格乘积
+  openWayMix: number[][]; // 可选规格对应质数集合
+  _way: { [key: number]: [number, number] }; // 在矩阵中对应的规格坐标，为了排除同一类规格数据
+  light: number[][]; // 规格可选状态，0：不可选，1：可选，2：已选择
+  selected: number[]; // 已选择规格
 
   constructor(maps: number[][], openWay: number[][]) {
     this.maps = maps;
@@ -90,11 +90,7 @@ export class PathFinder {
       for (let j = 0; j < li.length; j++) {
         if (li[j] !== 2) {
           // 如果是加一个条件，只在是light值为1的点进行选择
-          if (isAdd) {
-            if (li[j]) {
-              light[i][j] = this._checkItem(maps[i][j], selected);
-            }
-          } else {
+          if ((isAdd && li[j]) || !isAdd) {
             light[i][j] = this._checkItem(maps[i][j], selected);
           }
         }
@@ -124,7 +120,7 @@ export class PathFinder {
   }
 
   /**
-   * 组合中已选内容，初始化后无内容
+   * 组合中已选内容
    * @param {Index} xpath
    * @returns
    */
@@ -137,10 +133,8 @@ export class PathFinder {
     if (selected.length) {
       for (let j = 0; j < selected.length; j++) {
         const s = selected[j];
-        // xpath表示同一行，当已经被选择的和当前检测的项目再同一行的时候
-        // 需要忽略。
-        // 必须选择了 [1, 2],检测的项目是[1, 3]，不可能存在[1, 2]和[1, 3]
-        // 的组合，他们在同一行
+        // xpath表示同一行，当已经被选择的和当前检测的项目在同一行的时候，需要忽略。
+        // 必须选择了 [1, 2],检测的项目是[1, 3]，不可能存在[1, 2]和[1, 3] 的组合，他们在同一行
         if (_way[s][0] !== xpath) {
           ret *= s;
           retArr.push(s);
@@ -160,9 +154,7 @@ export class PathFinder {
 
     // 检查是否可选中
     if (!this.light[p[0]][p[1]]) {
-      throw new Error(
-        `this point [${p}] is no longer available, please choose another`,
-      );
+      throw new Error(`this point [${p}] is no longer available, please choose another`);
     }
 
     if (this.selected.includes(val)) return;
@@ -228,13 +220,4 @@ export class PathFinder {
     }
     return way;
   }
-}
-
-/**
- * 笛卡尔积组装
- * @param {Array} list
- * @returns []
- */
-export function descartes(list: any[][]): any[][] {
-  return list.reduce((a, b) => a.flatMap((x) => b.map((y) => [...x, y])), [[]]);
 }

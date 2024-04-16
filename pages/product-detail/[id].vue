@@ -27,11 +27,11 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from 'vue-router';
 const route = useRoute();
+const foo = useFoo();
 
 definePageMeta({
-  middleware: 'must-auth',
+  middleware: 'auth',
   validate: (route) => {
     // 可配置多个拦截规则
     const rules = [
@@ -53,10 +53,10 @@ const stateType = ref([
 ]);
 
 const skuStock = ref([
-  {
-    stock: 10,
-    skuName: ['男裤', '黑色', 'S', '中'],
-  },
+  // {
+  //   stock: 10,
+  //   skuName: ['男裤', '黑色', 'S', '中'],
+  // },
   {
     stock: 0,
     skuName: ['男裤', '黑色', 'L', '中'],

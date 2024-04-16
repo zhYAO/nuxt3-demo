@@ -1,17 +1,7 @@
-import { useLocalePath } from 'nuxt';
-
-export default defineNuxtRouteMiddleware(to => {
-  const localePath = useLocalePath()
-  const loginRoute = `${localePath('/')}/login`
-  const accountRoute = `${localePath('/')}/account`
-
-  const { loginStatus } = useLoginStatus()
-
-  if (to.fullPath === loginRoute && loginStatus.value) {
-    return linkTo('/')
+export default defineNuxtRouteMiddleware((to) => {
+  const initRoute = `/`;
+  console.log('to', to);
+  if (to.fullPath === initRoute) {
+    return navigateTo('/home');
   }
-
-  if (to.fullPath.startsWith(accountRoute) && !loginStatus.value) {
-    return linkTo('/login')
-  }
-})
+});
